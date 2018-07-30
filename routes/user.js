@@ -16,7 +16,7 @@ router.post('/register', (req, res) => {
 			firstName: user.firstName,
 			lastName: user.lastName,
 			username: user.username,
-			handle: `${user.username}-${user._id}`,
+			points: user.points,
 			type: user.type,
 			token
 		}))
@@ -24,12 +24,11 @@ router.post('/register', (req, res) => {
 })
 
 router.patch('/', authenticate, (req, res) => {
-	const { firstName, lastName, username, handle } = req.body
+	const { firstName, lastName, username } = req.body
 	const userFields = {
 		firstName,
 		lastName,
-		username,
-		handle
+		username
 	}
 
 	User.findOneAndUpdate(
@@ -66,6 +65,7 @@ router.post('/login', (req, res) => {
 			firstName: user.firstName,
 			lastName: user.lastName,
 			type: user.type,
+			points: user.points,
 			username: user.username,
 			token
 		}))

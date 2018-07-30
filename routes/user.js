@@ -1,6 +1,7 @@
 const express = require('express')
 const _ = require('lodash')
 const { authenticate } = require('../middleware/authenticate')
+const { admin } = require('../middleware/admin')
 const { User } = require('../models/user')
 
 const router = express.Router()
@@ -23,15 +24,31 @@ router.post('/register', (req, res) => {
 })
 
 router.patch('/', authenticate, (req, res) => {
-	const { firstName, lastName, type } = req.body
+	const { firstName, lastName, username, handle } = req.body
 	const userFields = {
 		firstName,
 		lastName,
-		type
+		username,
+		handle
 	}
 
 	User.findOneAndUpdate(
 		{ user: res.user._id },
+		{ $set: userFields },
+		{ new: true }
+	)
+		.then(user => res.json(user))
+		.catch(() => res.status(400).json({ error: 'user not found' }))
+})
+
+router.patch('/:id', admin, (req, res) => {
+	const { type } = req.body
+	const userFields = {
+		type
+	}
+
+	User.findOneAndUpdate(
+		{ user: req.params.id },
 		{ $set: userFields },
 		{ new: true }
 	)

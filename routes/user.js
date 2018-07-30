@@ -39,7 +39,7 @@ router.patch('/', authenticate, (req, res) => {
 		.catch(() => res.status(400).json({ error: 'user not found' }))
 })
 
-router.get('/me', authenticate, (req, res) => res.json(res.user.username))
+router.get('/me', authenticate, (req, res) => res.json(res.user))
 
 router.post('/login', (req, res) => {
 	const body = _.pick(req.body, ['email', 'password'])

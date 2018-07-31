@@ -27,16 +27,12 @@ router.post('/register', (req, res) => {
 router.patch('/', authenticate, (req, res) => {
 	const body = _.pick(req.body, ['firstName', 'lastName', 'username'])
 
-	if (!ObjectID.isValid(id)) {
-		return res.status(404).json({ error: 'Invalid ID' })
-	}
-
 	return User.findOneAndUpdate({
 		_id: res.user._id
 	}, { $set: body }, { new: true })
 		.then(user => {
-			if (!stuuserdent) {
-				return res.status(404).json({ error: 'Unable to update that student' })
+			if (!user) {
+				return res.status(404).json({ error: 'Unable to update that user' })
 			}
 			return res.status(200).json(user)
 		})

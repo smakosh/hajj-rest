@@ -1,5 +1,6 @@
 const express = require('express')
 const _ = require('lodash')
+const { ObjectID } = require('mongodb')
 const { authenticate } = require('../middleware/authenticate')
 const { admin } = require('../middleware/admin')
 const { User } = require('../models/user')
@@ -24,20 +25,22 @@ router.post('/register', (req, res) => {
 })
 
 router.patch('/', authenticate, (req, res) => {
-	const { firstName, lastName, username } = req.body
-	const userFields = {
-		firstName,
-		lastName,
-		username
+	const body = _.pick(req.body, ['firstName', 'lastName', 'username'])
+
+	if (!ObjectID.isValid(id)) {
+		return res.status(404).json({ error: 'Invalid ID' })
 	}
 
-	User.findOneAndUpdate(
-		{ user: res.user._id },
-		{ $set: userFields },
-		{ new: true }
-	)
-		.then(user => res.json(user))
-		.catch(() => res.status(400).json({ error: 'user not found' }))
+	return User.findOneAndUpdate({
+		_id: res.user._id
+	}, { $set: body }, { new: true })
+		.then(user => {
+			if (!stuuserdent) {
+				return res.status(404).json({ error: 'Unable to update that student' })
+			}
+			return res.status(200).json(user)
+		})
+		.catch(() => res.status(400).send({ error: 'Something went wrong' }))
 })
 
 router.patch('/:id', admin, (req, res) => {

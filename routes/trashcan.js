@@ -2,13 +2,11 @@ const express = require('express')
 const _ = require('lodash')
 const { ObjectID } = require('mongodb')
 const { authenticate } = require('../middleware/authenticate')
-const { admin } = require('../middleware/admin')
-const { worker } = require('../middleware/worker')
 const { Trashcan } = require('../models/trashcan')
 
 const router = express.Router()
 
-router.post('/', admin, (req, res) => {
+router.post('/', authenticate, (req, res) => {
 	const { name, type, lat, lng } = req.body
 	const trashcan = new Trashcan({
 		name,
@@ -48,7 +46,7 @@ router.get('/:id', authenticate, (req, res) => {
 	}).catch(() => res.status(400).json({ error: 'Something went wrong' }))
 })
 
-router.delete('/:id', admin, (req, res) => {
+router.delete('/:id', authenticate, (req, res) => {
 	const { id } = req.params
 
 	if (!ObjectID.isValid(id)) {
@@ -64,7 +62,7 @@ router.delete('/:id', admin, (req, res) => {
 		}).catch(() => res.status(400).send({ error: 'Something went wrong' }))
 })
 
-router.patch('/:id', admin, (req, res) => {
+router.patch('/:id', authenticate, (req, res) => {
 	const { id } = req.params
 	const body = _.pick(req.body, [
 		'name',
@@ -90,7 +88,7 @@ router.patch('/:id', admin, (req, res) => {
 		.catch(() => res.status(400).send({ error: 'Something went wrong' }))
 })
 
-router.patch('/filled/:id', worker, (req, res) => {
+router.patch('/filled/:id', authenticate, (req, res) => {
 	const { id } = req.params
 
 	if (!ObjectID.isValid(id)) {

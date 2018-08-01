@@ -19,7 +19,7 @@ router.post('/', admin, (req, res) => {
 	})
 
 	trashcan.save()
-		.then(doc => res.status(200).json(doc))
+		.then(trashcan => res.status(200).json(trashcan))
 		.catch(() => res.status(400).send({ error: 'Something went wrong' }))
 })
 

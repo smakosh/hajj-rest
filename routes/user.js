@@ -1,7 +1,6 @@
 const express = require('express')
 const _ = require('lodash')
 const { authenticate } = require('../middleware/authenticate')
-const { admin } = require('../middleware/admin')
 const { User } = require('../models/user')
 
 const router = express.Router()
@@ -38,7 +37,7 @@ router.patch('/', authenticate, (req, res) => {
 		.catch(() => res.status(400).send({ error: 'Something went wrong' }))
 })
 
-router.patch('/:id', admin, (req, res) => {
+router.patch('/:id', authenticate, (req, res) => {
 	const { type } = req.body
 	const userFields = {
 		type

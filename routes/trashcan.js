@@ -21,9 +21,9 @@ router.post('/', authenticate, (req, res) => {
 })
 
 router.get('/', authenticate, (req, res) => {
-	Trashcan.find({ _creator: res.user._id })
+	Trashcan.find()
 		.then(trashcans => res.status(200).json(trashcans))
-		.catch(() => res.status(400).json({ error: 'This user has no trashcans added' }))
+		.catch(() => res.status(400).json({ error: 'No trashcans available' }))
 })
 
 router.get('/:id', authenticate, (req, res) => {

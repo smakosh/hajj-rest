@@ -7,10 +7,9 @@ const { Trashcan } = require('../models/trashcan')
 const router = express.Router()
 
 router.post('/', authenticate, (req, res) => {
-	const { name, type, lat, lng } = req.body
+	const { name, lat, lng } = req.body
 	const trashcan = new Trashcan({
 		name,
-		type,
 		lat,
 		lng,
 		_creator: res.user._id
@@ -66,7 +65,6 @@ router.patch('/:id', authenticate, (req, res) => {
 	const { id } = req.params
 	const body = _.pick(req.body, [
 		'name',
-		'type',
 		'filled',
 		'lat',
 		'lng'

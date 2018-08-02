@@ -7,10 +7,6 @@ const TrashSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	type: {
-		type: String,
-		required: true
-	},
 	filled: {
 		type: Boolean,
 		default: false

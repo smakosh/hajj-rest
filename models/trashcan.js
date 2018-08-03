@@ -29,6 +29,10 @@ const TrashSchema = new mongoose.Schema({
 				type: Schema.Types.ObjectId,
 				ref: 'User'
 			},
+			seen: {
+				type: Boolean,
+				default: false
+			},
 			date: {
 				type: Date,
 				default: Date.now

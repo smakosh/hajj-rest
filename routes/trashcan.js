@@ -108,10 +108,6 @@ router.patch('/filled/:id', authenticate, (req, res) => {
 router.post('/report/:trash_id', authenticate, (req, res) => {
 	const { trash_id } = req.params
 
-	if (!ObjectID.isValid(trash_id)) {
-		return res.status(404).json({ error: 'Invalid ID' })
-	}
-
 	return Trashcan.findById(trash_id)
 		.then(trashcan => {
 			if (!trashcan) {

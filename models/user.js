@@ -8,21 +8,21 @@ const { secret_key } = require('../config/config')
 const UserSchema = new mongoose.Schema({
 	firstName: {
 		type: String,
-		required: true,
-		minlength: 2,
-		maxlength: 20
+		required: [true, 'firstName is required'],
+		minlength: [2, 'firstName must contain over 2 characters'],
+		maxlength: [20, 'firstName must not contain over 20 characters']
 	},
 	lastName: {
 		type: String,
-		required: true,
-		minlength: 2,
-		maxlength: 20
+		required: [true, 'lastName is required'],
+		minlength: [2, 'lastName must contain over 2 characters'],
+		maxlength: [20, 'lastName must not contain over 20 characters']
 	},
 	username: {
 		type: String,
-		required: true,
-		minlength: 1,
-		maxlength: 12,
+		required: [true, 'username is required'],
+		minlength: [1, 'Username is required'],
+		maxlength: [12, 'Username must not contain over 12 characters'],
 		trim: true
 	},
 	type: {
@@ -35,19 +35,19 @@ const UserSchema = new mongoose.Schema({
 	},
 	email: {
 		type: String,
-		required: true,
+		required: [true, 'email is required'],
 		minlength: 1,
 		unique: true,
 		trim: true,
 		validate: {
 			validator: validator.isEmail,
-			message: '{VALUE} is not a valid email'
+			message: 'invalid email'
 		}
 	},
 	password: {
 		type: String,
-		required: true,
-		minlength: 6
+		required: [true, 'password is required'],
+		minlength: [6, 'Password must contain over 6 characters']
 	},
 	tokens: [{
 		access: {

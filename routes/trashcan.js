@@ -61,39 +61,6 @@ router.delete('/:id', authenticate, (req, res) => {
 		}).catch(() => res.status(400).send({ error: 'Something went wrong' }))
 })
 
-router.patch('/report/:id', authenticate, (req, res) => {
-	const { id } = req.params
-
-	if (!ObjectID.isValid(id)) {
-		return res.status(404).json({ error: 'Invalid ID' })
-	}
-
-	// { _id: 100 },
-	// { $set:
-	// 	{
-	// 		quantity: 500,
-	// 		details: { model: "14Q3", make: "xyz" },
-	// 		tags: [ "coats", "outerwear", "clothing" ]
-	// 	}
-	// }
-
-	return Trashcan.findOneAndUpdate({
-		_id: id,
-		_creator: res.user._id
-	}, { $set: { reports: [
-		{
-			seen: true
-		}
-	] } }, { new: true })
-		.then(trashcan => {
-			if (!trashcan) {
-				return res.status(404).json({ error: 'Unable to update that trashcan' })
-			}
-			return res.status(200).json(trashcan)
-		})
-		.catch(() => res.status(400).send({ error: 'Something went wrong' }))
-})
-
 router.patch('/:id', authenticate, (req, res) => {
 	const { id } = req.params
 	const body = _.pick(req.body, [

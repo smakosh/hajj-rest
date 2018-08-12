@@ -34,7 +34,7 @@ router.post('/login', (req, res) => {
 			username: user.username,
 			token
 		}))
-	}).catch(err => res.status(400).json(err.errors))
+	}).catch(() => res.status(400).json({ errors: { email: 'Wrong credentials' } }))
 })
 
 router.patch('/', authenticate, (req, res) => {
@@ -49,7 +49,10 @@ router.patch('/', authenticate, (req, res) => {
 			}
 			return res.status(200).json(user)
 		})
-		.catch(err => res.status(400).json(err.errors))
+		.catch(err => {
+			console.log(err)
+			res.status(400).json(err)
+		})
 })
 
 router.patch('/:id', authenticate, (req, res) => {
@@ -74,7 +77,7 @@ router.delete('/me/token', authenticate, (req, res) => {
 		res.status(200).json({ message: 'logged out' })
 	}, () => {
 		res.status(400).json({ error: 'could not log you out' })
-	}).catch(err => res.status(400).json(err.errors))
+	}).catch(() => res.status(400).json({ error: 'Something went wrong' }))
 })
 
 module.exports = router
